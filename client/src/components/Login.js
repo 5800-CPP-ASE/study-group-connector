@@ -20,7 +20,7 @@ const Login = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Login</h2>
+      <h2>Login to Study Group Connector</h2>
       <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" required />
       <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" required />
       <button type="submit">Login</button>
