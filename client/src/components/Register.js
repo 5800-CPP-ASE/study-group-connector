@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; 
 import { register } from '../services/auth';
 
 const Register = () => {
@@ -24,7 +24,7 @@ const Register = () => {
       <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" required />
       <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" required />
       <button type="submit">Register</button>
-      <p><a href="/">Already have an account? Login</a></p>
+      <p><Link to="/">Already have an account? Login</Link></p>  {}
     </form>
   );
 };

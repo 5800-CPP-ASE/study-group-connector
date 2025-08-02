@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'
 import { login } from '../services/auth';
 
 const Login = () => {
@@ -24,7 +24,7 @@ const Login = () => {
       <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" required />
       <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" required />
       <button type="submit">Login</button>
-      <p><a href="/register">Don't have an account? Register</a></p>
+      <p><Link to="/register">Don't have an account? Register</Link></p>  { }
     </form>
   );
 };
