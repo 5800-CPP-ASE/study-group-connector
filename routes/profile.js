@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+// authentication middleware to verify jwt token and attach user
 const authMiddleware = (req, res, next) => {
   const token = req.header('x-auth-token');
   if (!token) return res.status(401).json({ msg: 'No token' });
@@ -14,6 +15,7 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
+// update endoint (authenticate, update courses, save user)
 router.put('/update', authMiddleware, async (req, res) => {
   const { courses, availability } = req.body;
   try {
@@ -27,4 +29,4 @@ router.put('/update', authMiddleware, async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = { router, authMiddleware };

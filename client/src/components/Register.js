@@ -7,6 +7,7 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  // submit handler to call register api
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -18,6 +19,7 @@ const Register = () => {
     }
   };
 
+  // render
   return (
     <form onSubmit={handleSubmit}>
       <h2>Register</h2>

@@ -4,8 +4,11 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Profile from './components/Profile';
 import Matches from './components/Matches';
+import Chat from './components/Chat';
+import Header from './components/Header'; 
 import './App.css';
 
+// router for ui, full page reload 
 function App() {
   return (
     <Router>
@@ -13,8 +16,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/matches" element={<Matches />} />
+          <Route path="/profile" element={<> <Header /> <Profile /> </>} />
+          <Route path="/matches" element={<> <Header /> <Matches /> </>} />
+          <Route path="/chat/:room" element={<> <Header /> <Chat /> </>} />
         </Routes>
       </div>
     </Router>

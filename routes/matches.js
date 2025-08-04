@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 
+// authentication middleware (verify and respond)
 const authMiddleware = (req, res, next) => {
   const token = req.header('x-auth-token');
   if (!token) return res.status(401).json({ msg: 'No token' });
@@ -14,10 +15,12 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
+// check if availability array overlaps
 function hasOverlap(avail1, avail2) {
   return avail1.some(a1 => avail2.some(a2 => a1 === a2));
 }
 
+// get matches, filtered by ovrlapping string
 router.get('/', authMiddleware, async (req, res) => {
   try {
     const currentUser = await User.findById(req.user.id);

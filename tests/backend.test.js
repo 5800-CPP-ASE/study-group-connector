@@ -6,6 +6,7 @@ const User = require('../models/User');
 
 let mongoServer;
 
+// setup and create in-mem db to connect before all tests
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   const uri = mongoServer.getUri();
@@ -18,7 +19,9 @@ afterAll(async () => {
   await mongoServer.stop();
 });
 
+// test suite 
 describe('Auth Routes', () => {
+  // success registering test
   it('should register a new user', async () => {
     const res = await request(app)
       .post('/api/auth/register')
@@ -27,6 +30,7 @@ describe('Auth Routes', () => {
     expect(res.body).toHaveProperty('token');
   });
 
+  // duplicate register test feail
   it('should fail to register duplicate user', async () => {
     await request(app)
       .post('/api/auth/register')

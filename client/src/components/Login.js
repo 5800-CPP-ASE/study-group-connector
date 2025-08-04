@@ -7,6 +7,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  // call login api, store token, navigate to profile
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -18,6 +19,7 @@ const Login = () => {
     }
   };
 
+  // render login form
   return (
     <form onSubmit={handleSubmit}>
       <h2>Login to Study Group Connector</h2>

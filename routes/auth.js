@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// Register
+// Registration endpoint ( unique email, password hash, save user and make token)
 router.post('/register', async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -13,13 +13,13 @@ router.post('/register', async (req, res) => {
     user = new User({ email, password: await bcrypt.hash(password, 10) });
     await user.save();
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
+    res.json({ token, userId: user._id });
   } catch (err) {
     res.status(500).json({ msg: 'Server error' });
   }
 });
 
-// Login
+// Login endpoint (verify credentials, generate token if valid )
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -28,7 +28,7 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ msg: 'Invalid credentials' });
     }
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
+    res.json({ token, userId: user._id });
   } catch (err) {
     res.status(500).json({ msg: 'Server error' });
   }

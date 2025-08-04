@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
 const MessageSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  receiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   text: { type: String, required: true },
   timestamp: { type: Date, default: Date.now },
+  read: { type: Boolean, default: false },
   room: { type: String, required: true }, 
 });
 module.exports = mongoose.model('Message', MessageSchema);
