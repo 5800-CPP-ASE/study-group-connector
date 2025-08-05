@@ -5,6 +5,11 @@ const cors = require('cors');
 const http = require('http');
 // const socketIo = require('socket.io');
 
+// Start DB connection immediately (async in background)
+connectDB().catch(err => {
+  console.error('Failed to connect to MongoDB:', err.message);
+});
+
 // create server instance
 const app = express();
 const server = http.createServer(app);
@@ -36,13 +41,11 @@ app.use('/api/chat', require('../routes/chat'));
 //   });
 // });
 
-// start server
+// For local runs only: Listen on port if run directly
 const PORT = process.env.PORT || 5000;
-
 if (require.main === module) {
-  connectDB().then(() => {
-    server.listen(PORT, () => console.log(`Server running on port ${PORT}`)); // check if file is run directly bruh
-  });
+  console.log(`Starting local server on port ${PORT}`);
+  server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }
 
 module.exports = app;
