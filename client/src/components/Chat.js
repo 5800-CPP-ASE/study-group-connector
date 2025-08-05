@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import io from 'socket.io-client';
+import Pusher from 'pusher-js';
 import axios from 'axios';
-
-const socket = io(); // initialize socket.io
 
 const Chat = () => {
   const { room } = useParams();
@@ -13,26 +11,35 @@ const Chat = () => {
 
   // effect hook to join room, fetch messages, listen for new ones
   useEffect(() => {
-    socket.emit('joinRoom', room);
     const fetchMessages = async () => {
       const res = await axios.get(`/api/chat/${room}`, { headers: { 'x-auth-token': localStorage.getItem('token') } });
       setMessages(res.data);
     };
     fetchMessages();
 
-    socket.on('message', async (message) => {
-      
-      const updatedMessages = await axios.get(`/api/chat/${room}`, { headers: { 'x-auth-token': localStorage.getItem('token') } });
-      setMessages(updatedMessages.data);
+    const pusher = new Pusher(process.env.REACT_APP_PUSHER_KEY, {
+      cluster: process.env.REACT_APP_PUSHER_CLUSTER
+    });
+    const channel = pusher.subscribe(room);
+    channel.bind('message', (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
     });
 
-    return () => socket.off('message');
+    return () => {
+      channel.unbind_all();
+      channel.unsubscribe();
+      pusher.disconnect();
+    };
   }, [room]);
 
-  // send message : emit via socket.io
-  const sendMessage = () => {
+  // send message : emit 
+  const sendMessage = async () => {
     if (text) {
-      socket.emit('sendMessage', { room, sender: currentUserId, receiver: room.split('_').find(id => id !== currentUserId), text });
+      await axios.post('/api/chat/send', { 
+        room, 
+        receiver: room.split('_').find(id => id !== currentUserId), 
+        text 
+      }, { headers: { 'x-auth-token': localStorage.getItem('token') } });
       setText('');
     }
   };
