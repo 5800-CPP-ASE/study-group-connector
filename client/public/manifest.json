@@ -1,0 +1,6 @@
+{
+  "name": "Study Group Connector",
+  "short_name": "SGC",
+  "start_url": ".",
+  "display": "standalone"
+}
